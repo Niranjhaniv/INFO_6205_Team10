@@ -27,5 +27,8 @@ public class Department {
     public ArrayList<Course> getCourses() {
         return courses;
     }
-    
+    @Override
+public boolean equals(Object obj) {
+return ((this.name==((Department)obj).name)&&(this.courses.equals(((Department)obj).getCourses())));
+}
 }

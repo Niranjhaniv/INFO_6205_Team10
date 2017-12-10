@@ -41,4 +41,10 @@ public class Course {
     }
    
     public String toString() { return name; }
+    
+    @Override
+public boolean equals(Object obj) {
+    return ((this.name==((Course)obj).name)&&(this.number==((Course)obj).number)&&(this.professors.equals(((Course)obj).getProfessors())));
+}
+    
 }

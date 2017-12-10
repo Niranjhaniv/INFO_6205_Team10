@@ -31,6 +31,9 @@ public class Professor {
     @Override
     public String toString() { return name; }
     
-    
+    @Override
+public boolean equals(Object obj) {
+    return ((this.id==((Professor)obj).id)&&(this.name==((Professor)obj).name));
+}
     
 }

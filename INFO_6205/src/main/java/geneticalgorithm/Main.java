@@ -17,7 +17,7 @@ import org.apache.log4j.BasicConfigurator;
  * @author Niranjanii
  */
 public class Main {
- 	public static final int POPULATION_SIZE = 10;
+ 	public static final int POPULATION_SIZE = 50;
 	public static final double MUTATION_RATE = 0.1;
 	public static final double CROSSOVER_RATE = 0.9;
 	public static final int TOURNAMENT_SELECTION_SIZE = 3;
@@ -50,37 +50,8 @@ public class Main {
     	System.out.println( "                                  | Fitness | Conflicts");
     	System.out.print("-----------------------------------------------------------------------------------");
     	System.out.println("-------------------------------------------------------------------------------------");
-
-        int mid = (POPULATION_SIZE-0)/2;
-         
-         CompletableFuture<Population> colonies1 = populationgenerate(mid-0, driver.data); 
-            CompletableFuture<Population> colonies2 = populationgenerate(POPULATION_SIZE-mid, driver.data);
-            
-                 CompletableFuture< Population> populationCombine = colonies1.
-                    thenCombine(colonies2, (xs1, xs2) -> {
-                        ArrayList<ClassSchedule> schedules = new  ArrayList<ClassSchedule>(xs1.getSchedules().size()+xs1.getSchedules().size());
-                        schedules.addAll(xs1.getSchedules());
-                        schedules.addAll(xs2.getSchedules());
-                        Population p=new Population(xs1.getSchedules(),xs2.getSchedules());
-                     
-                        return p;
-                    });
-                
-               populationCombine.whenComplete((p, throwable) -> {
-            
-                 
-                   combine(p);
-                   
-                
-            }); 
-               
-              CompletableFuture.allOf(populationCombine).join();
-               
-               
-           populationCombine.thenRun(()->{
-                  call(driver);
-                });
-           
+        multithreadFunctionality(driver,0,POPULATION_SIZE);
+    
  
 	}
 	private void printScheduleAsTable(ClassSchedule schedule, int generation,Data data) {
@@ -134,13 +105,58 @@ public class Main {
     	System.out.println("-------------------------------------------------------------------------------------");
     }
         
-        
-            private static CompletableFuture<Population> populationgenerate(int populationSize, Data data) {
+          private static void multithreadFunctionality(Main driver,int from,int to) {
+              
+              int size = to - from;
+            if (size < CUT_OFF)
+            {
+                 population = new Population(size, driver.data).sortByFitness();
+            }
+            else
+            {
+                  int mid = (to+from)/2;
+         
+                CompletableFuture<Population> colonies1 = populationgenerate(from,mid, driver); 
+                   CompletableFuture<Population> colonies2 = populationgenerate(mid,to, driver);
+
+                        CompletableFuture< Population> populationCombine = colonies1.
+                           thenCombine(colonies2, (xs1, xs2) -> {
+                               ArrayList<ClassSchedule> schedules = new  ArrayList<ClassSchedule>(xs1.getSchedules().size()+xs1.getSchedules().size());
+                               schedules.addAll(xs1.getSchedules());
+                               schedules.addAll(xs2.getSchedules());
+                               Population p=new Population(xs1.getSchedules(),xs2.getSchedules());
+
+                               return p;
+                           });
+
+                      populationCombine.whenComplete((p, throwable) -> {
+
+
+                          combine(p);
+
+
+                   }); 
+
+                    CompletableFuture.allOf(populationCombine).join();
+
+
+                 populationCombine.thenRun(()->{
+                     
+                     
+                        call(driver);
+                      });
+
+            }
+          }
+
+  
+            private static CompletableFuture<Population> populationgenerate(int from,int to, Main driver) {
         //CompletableFuture<int[]> part1 = null;
         return CompletableFuture.supplyAsync(
                 () -> {
                 	
-                   Population population = new Population(populationSize, data).sortByFitness();
+                   //Population population = new Population(to-from,driver.data).sortByFitness();
+                    multithreadFunctionality(driver, from,to);
                     return population;
                 }
                 
@@ -158,12 +174,13 @@ public class Main {
                
                
                
-    private static void call(Main driver) {
-         System.out.print("Came here");
-                
-                   int generationNumber = 0;
+    private static void call(Main driver) {  
+        
+        if(population.getSchedules().size() == POPULATION_SIZE)
+        {
+            int generationNumber = 0;
                     GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm(driver.data);
-                    System.out.println(driver.data);
+                    
                     population.getSchedules().forEach(schedule -> System.out.println("       "+driver.scheduleNumb++ +
                                                                                                                                          "     | "+ schedule + " | " +
                                                                                                                                          String.format("%.5f",schedule.getFitness()) +
@@ -189,6 +206,7 @@ public class Main {
                         driver.printScheduleAsTable(population.getSchedules().get(0), generationNumber,driver.data);
                         driver.classNumb = 1;
                       }
+        }
                     
     }
 

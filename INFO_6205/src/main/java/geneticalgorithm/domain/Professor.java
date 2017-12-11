@@ -5,35 +5,55 @@
  */
 package geneticalgorithm.domain;
 
+/*
+ * <h1> To Implement a Professor Class </h1>
+ */
 /**
  *
- * @author Niranjanii
+ * @author Niranjanii,Akilan
  */
 public class Professor {
-  
+
     private String id;
     private String name;
-    
-    public Professor(String id,String name)
-    {
-        this.id= id;
-        this.name=name;
+
+    /**
+     * @param id This is the first parameter to the constructor to set value of
+     * professor id
+     *
+     * @param time This is the second parameter to the constructor to set
+     * professor name
+     */
+    public Professor(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
+
+    /**
+     *
+     * @return This is the getter for the id variable
+     */
 
     public String getId() {
         return id;
     }
 
+    /**
+     *
+     * @return This is the getter for the name variable
+     */
     public String getName() {
         return name;
     }
 
     @Override
-    public String toString() { return name; }
-    
+    public String toString() {
+        return name;
+    }
+
     @Override
-public boolean equals(Object obj) {
-    return ((this.id==((Professor)obj).id)&&(this.name==((Professor)obj).name));
-}
-    
+    public boolean equals(Object obj) {
+        return ((this.id.equalsIgnoreCase(((Professor) obj).id)) && (this.name.equalsIgnoreCase(((Professor) obj).name)));
+    }
+
 }

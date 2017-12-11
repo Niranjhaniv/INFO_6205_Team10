@@ -8,10 +8,12 @@ package geneticalgorithm;
 import geneticalgorithm.domain.Department;
 import java.util.ArrayList;
 import geneticalgorithm.domain.Class;
-
+/*
+ * <h1> To Implement a Class Schedule Class </h1>
+ */
 /**
  *
- * @author Niranjanii
+ * @author Niranjanii,Akilan
  */
 public class ClassSchedule {
 
@@ -22,6 +24,12 @@ public class ClassSchedule {
     private int numbOfConflicts = 0;
     private Data data;
 
+    /**
+     * @param classes List of classes in the schedule
+     * @param fitness Fitness level of the class schedule
+     * @param numbOfConflicts no of conflicts in the class schedule
+     *
+     */
     public Data getData() {
         return data;
     }

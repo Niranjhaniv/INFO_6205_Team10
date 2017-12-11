@@ -16,19 +16,16 @@ import utilities.StopWatch;
 
 /**
  *
- * @author Niranjanii
+ * @author Niranjanii,Akilan
  */
 public class Main {
- 	public static final int POPULATION_SIZE = 100;
+ 	public static final int POPULATION_SIZE =70 ;
 	public static final double MUTATION_RATE = 0.1;
 	public static final double CROSSOVER_RATE = 0.9;
 	public static final int TOURNAMENT_SELECTION_SIZE = 3;
 	public static final int NUMB_OF_ELITE_SCHEDULES = 1;
         public static final int CUT_OFF = 10;
 
-  
-
- 
 	private int scheduleNumb = 0;
 	private int classNumb = 1;
 	private Data data;

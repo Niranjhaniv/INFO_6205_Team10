@@ -8,14 +8,23 @@ package geneticalgorithm;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
+/*
+ * <h1> To Implement a Population Class </h1>
+ */
 /**
  *
- * @author Niranjanii
+ * @author Niranjanii,Akilan
  */
 public class Population implements Cloneable {
 
     private ArrayList<ClassSchedule> schedules;
 
+    /**
+     * @param size This is the first parameter to the constructor to set value
+     * of size of the population
+     * @param schedules this has the Class schedules in the population
+     *
+     */
     public Population(int size, Data data) {
         schedules = new ArrayList<ClassSchedule>(size);
         IntStream.range(0, size).forEach(x -> schedules.add(new ClassSchedule(data).initialize()));
@@ -33,14 +42,25 @@ public class Population implements Cloneable {
         return super.clone();
     }
 
+    /**
+     *
+     * @return This is the getter for the list of Class schedules
+     */
     public ArrayList<ClassSchedule> getSchedules() {
         return this.schedules;
     }
 
+    /**
+     *
+     * @param schedules This is the setter for the schedules
+     */
     public void setSchedules(ArrayList<ClassSchedule> schedules) {
         this.schedules = schedules;
     }
 
+    /*
+    This function sort the population by the fitness value of the class schedule
+     */
     public Population sortByFitness() {
         schedules.sort((schedule1, schedule2) -> {
             int returnValue = 0;
@@ -54,8 +74,8 @@ public class Population implements Cloneable {
         return this;
     }
 
-public boolean equals(Object obj) {
-    System.out.println("test");
- return (this.schedules.equals(((Population)obj).getSchedules()));    
-}
+    public boolean equals(Object obj) {
+        //System.out.println("test");
+        return (this.schedules.equals(((Population) obj).getSchedules()));
+    }
 }

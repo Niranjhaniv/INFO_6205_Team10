@@ -11,13 +11,15 @@ import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.PropertyConfigurator;
+import utilities.StopWatch;
 
 /**
  *
  * @author Niranjanii
  */
 public class Main {
- 	public static final int POPULATION_SIZE = 50;
+ 	public static final int POPULATION_SIZE = 100;
 	public static final double MUTATION_RATE = 0.1;
 	public static final double CROSSOVER_RATE = 0.9;
 	public static final int TOURNAMENT_SELECTION_SIZE = 3;
@@ -33,10 +35,12 @@ public class Main {
         
         static Population population = null;
         
-        final static Logger logger = Logger.getLogger(Main.class);
+        final static Logger logger = Logger.getLogger(Main.class.getName());
         
 	public static void main(String[] args) {
             BasicConfigurator.configure();
+            //PropertyConfigurator.configure(getClass().getResource("logfileCreation/log4j-test"));
+             StopWatch stopWatch =  new StopWatch();
             logger.debug("Entered Main Class");
 		Main driver = new Main();
 		driver.data = new Data();
@@ -51,6 +55,8 @@ public class Main {
     	System.out.print("-----------------------------------------------------------------------------------");
     	System.out.println("-------------------------------------------------------------------------------------");
         multithreadFunctionality(driver,0,POPULATION_SIZE);
+        double time = stopWatch.elapsedTime();
+        System.out.println( "Time taken to run "+time);
     
  
 	}
@@ -88,6 +94,7 @@ public class Main {
         if (schedule.getFitness() == 1) System.out.println("> Solution Found in "+ (generation + 1) +" generations");
         System.out.print("-----------------------------------------------------------------------------------");
     	System.out.println("-------------------------------------------------------------------------------------");
+        logger.info("Generations obtained in - > " + (generation+1));
     }
 	private void printAvailableData() {
     	System.out.println("Available Departments ==>");
@@ -131,8 +138,15 @@ public class Main {
 
                       populationCombine.whenComplete((p, throwable) -> {
 
-
+                          if(throwable == null)
+                          {
                           combine(p);
+                          }
+                          else
+                          {
+                              logger.debug("Exception thrown in thread" + throwable);
+                              
+                          }
 
 
                    }); 
@@ -151,7 +165,7 @@ public class Main {
 
   
             private static CompletableFuture<Population> populationgenerate(int from,int to, Main driver) {
-        //CompletableFuture<int[]> part1 = null;
+        
         return CompletableFuture.supplyAsync(
                 () -> {
                 	

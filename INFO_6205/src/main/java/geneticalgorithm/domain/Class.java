@@ -10,6 +10,7 @@ package geneticalgorithm.domain;
  * @author Niranjanii
  */
 public class Class {
+
     private int id;
     private Department dept;
     private Course course;
@@ -21,7 +22,7 @@ public class Class {
         this.id = id;
         this.dept = dept;
         this.course = course;
-       
+
     }
 
     public void setId(int id) {
@@ -74,8 +75,11 @@ public class Class {
 
     @Override
     public String toString() {
-        return "["+ dept.getName() + ","+ course.getNumber() + "," + professor.getId() + "," + meetingTime.getId() + "," + room.getNumber() +"]" ;
+        return "[" + dept.getName() + "," + course.getNumber() + "," + professor.getId() + "," + meetingTime.getId() + "," + room.getNumber() + "]";
     }
-    
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        return ((this.id == ((Class) obj).id) && (this.dept.equals(((Class) obj).getDept())) && (this.course .equals(((Class) obj).getCourse())));
+    }
 }

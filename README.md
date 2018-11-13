@@ -1,4 +1,9 @@
-## Time Table Scheduling Implementation
+## Time Table generation using Genetic algorithm  
+
+•	Programmed Time Table Scheduling, a polynomial time verifiable NP-hard problem using genetic algorithms <br/>
+•	Targeted to minimize the conflicts in the timetable in addition to developing a fitness function to reduce the search space <br/>
+•	The core of genetic algorithm which was developed in Java 8 was tested on small and large timetable problems <br/>
+
 
 Files Included
 ------------------------
